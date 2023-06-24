@@ -49,7 +49,7 @@ public class WatchView extends Ui.WatchFace {
     var minutes = clockTime.min < 10 ? "0" + clockTime.min : clockTime.min;
     var seconds = clockTime.sec < 10 ? "0" + clockTime.sec : clockTime.sec;
     var font = Gfx.FONT_SYSTEM_NUMBER_MEDIUM;
-    dc.setColor(Gfx.COLOR_YELLOW, Gfx.COLOR_TRANSPARENT);
+    dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
     dc.drawText(
       dw / 2,
       dh / 2 - (dc.getFontHeight(font) / 2),
@@ -165,7 +165,7 @@ public class WatchView extends Ui.WatchFace {
       var label = boundingBoxes[i]["label"];
       var font = r < dw / 6 ? Gfx.FONT_SYSTEM_XTINY : Gfx.FONT_SYSTEM_SMALL;
 
-      dc.setColor(Gfx.COLOR_YELLOW, Gfx.COLOR_TRANSPARENT);
+      dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
       dc.drawText(x, y - (dc.getFontHeight(font)), font, label.toString(), Gfx.TEXT_JUSTIFY_CENTER);
       dc.drawText(x, y, font, value.toString(), Gfx.TEXT_JUSTIFY_CENTER);
 
