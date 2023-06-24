@@ -17,11 +17,13 @@ public class WatchApp extends App.AppBase {
 
     // register all the complication callbacks
     function onStart(state) {
-      Complications.registerComplicationChangeCallback(self.method(:onComplicationUpdated));
-      Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_HEART_RATE));
-      Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_STEPS));
-      Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_CURRENT_TEMPERATURE));
+      Complications.registerComplicationChangeCallback(self.method(:onComplicationUpdated) as Complications.ComplicationChangedCallback);
+      Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_BATTERY));
+      Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_DATE));
       Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_BODY_BATTERY));
+      Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_SUNRISE));
+      Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_CURRENT_TEMPERATURE));
+      Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_SUNSET));
     }
 
     // fetches the complication when it changes, and passes to the Watchface

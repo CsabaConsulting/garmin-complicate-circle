@@ -45,11 +45,17 @@ public class WatchView extends Ui.WatchFace {
     var clockTime = Sys.getClockTime();
 
     // define time, day, month variables
-    var hour = clockTime.hour;
-    var minute = clockTime.min < 10 ? "0" + clockTime.min : clockTime.min;
-    var font = Gfx.FONT_SYSTEM_NUMBER_HOT;
-    dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
-    dc.drawText(dw/2,dh/2-(dc.getFontHeight(font)/2),font,hour.toString()+":"+minute.toString(),Gfx.TEXT_JUSTIFY_CENTER);
+    var hours = clockTime.hour;
+    var minutes = clockTime.min < 10 ? "0" + clockTime.min : clockTime.min;
+    var seconds = clockTime.sec < 10 ? "0" + clockTime.sec : clockTime.sec;
+    var font = Gfx.FONT_SYSTEM_NUMBER_MEDIUM;
+    dc.setColor(Gfx.COLOR_YELLOW, Gfx.COLOR_TRANSPARENT);
+    dc.drawText(
+      dw / 2,
+      dh / 2 - (dc.getFontHeight(font) / 2),
+      font, hours.toString() + ":" + minutes.toString() + ":" + seconds.toString(),
+      Gfx.TEXT_JUSTIFY_CENTER
+    );
 
     // draw bounding boxes (debug)
     drawBoundingBoxes(dc);
@@ -74,32 +80,49 @@ public class WatchView extends Ui.WatchFace {
     //  x,y = center of circle
     //  r = radius
 
-    var radius = dw/5;
+    var largeRadius = dw / 5;
+    var smallRadius = dw / 8;
+    var smallTopY = dh * 8.75 / 32;
+    var smallLeftX = dw * 6 / 32;
+    var smallRightX = dw * 26 / 32;
+    var smallBottomY = dh * 23 / 32;
 
     boundingBoxes = [
       {
-        "label" => "Heart Rate",
-        "bounds" => [dw/4,dh/4,radius],
+        "label" => "Batt",
+        "bounds" => [smallLeftX, smallTopY, smallRadius],
         "value" => "",
-        "complicationId" => Complications.COMPLICATION_TYPE_HEART_RATE
+        "complicationId" => Complications.COMPLICATION_TYPE_BATTERY
       },
       {
-        "label" => "Temperature",
-        "bounds" => [dw*3/4,dh/4,radius],
+        "label" => "Date",
+        "bounds" => [dw / 2, dh * 6.5 / 32, largeRadius],
+        "value" => "",
+        "complicationId" => Complications.COMPLICATION_TYPE_DATE
+      },
+      {
+        "label" => "BBat",
+        "bounds" => [smallRightX, smallTopY, smallRadius],
+        "value" => "",
+        "complicationId" => Complications.COMPLICATION_TYPE_BODY_BATTERY
+      },
+      {
+        "label" => "SSet",
+        "bounds" => [smallLeftX, smallBottomY, smallRadius],
+        "value" => "",
+        "complicationId" => Complications.COMPLICATION_TYPE_SUNRISE
+      },
+      {
+        "label" => "Temp",
+        "bounds" => [dw / 2, dh * 25.5 / 32, largeRadius],
         "value" => "",
         "complicationId" => Complications.COMPLICATION_TYPE_CURRENT_TEMPERATURE
       },
       {
-        "label" => "Steps",
-        "bounds" => [dw/4,dh*3/4,radius],
+        "label" => "Rise",
+        "bounds" => [smallRightX, smallBottomY, smallRadius],
         "value" => "",
-        "complicationId" => Complications.COMPLICATION_TYPE_STEPS
-      },
-      {
-        "label" => "BodyBatt",
-        "bounds" => [dw*3/4,dh*3/4,radius],
-        "value" => "",
-        "complicationId" => Complications.COMPLICATION_TYPE_BODY_BATTERY
+        "complicationId" => Complications.COMPLICATION_TYPE_SUNSET
       }
     ];
 
@@ -111,7 +134,7 @@ public class WatchView extends Ui.WatchFace {
     var thisComplication = Complications.getComplication(complication);
     var thisType = thisComplication.getType();
 
-    for (var i=0; i < boundingBoxes.size(); i=i+1){
+    for (var i = 0; i < boundingBoxes.size(); i++) {
 
       if (thisType == boundingBoxes[i]["complicationId"]) {
         boundingBoxes[i]["value"] = thisComplication.value;
@@ -127,24 +150,24 @@ public class WatchView extends Ui.WatchFace {
 
     dc.setPenWidth(1);
 
-    for (var i=0; i < boundingBoxes.size(); i=i+1){
+    for (var i = 0; i < boundingBoxes.size(); i++){
 
       var x = boundingBoxes[i]["bounds"][0];
       var y = boundingBoxes[i]["bounds"][1];
       var r = boundingBoxes[i]["bounds"][2];
 
       // draw a circle
-      dc.setColor(Gfx.COLOR_PURPLE, Gfx.COLOR_PURPLE);
-      dc.drawCircle(x,y,r);
+      dc.setColor(Gfx.COLOR_DK_RED, Gfx.COLOR_DK_RED);
+      dc.drawCircle(x, y, r);
 
       // draw the complication label and value
       var value = boundingBoxes[i]["value"];
       var label = boundingBoxes[i]["label"];
-      var font = Gfx.FONT_SYSTEM_TINY;
+      var font = r < dw / 6 ? Gfx.FONT_SYSTEM_XTINY : Gfx.FONT_SYSTEM_SMALL;
 
-      dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
-      dc.drawText(x,y-(dc.getFontHeight(font)),font,label.toString(),Gfx.TEXT_JUSTIFY_CENTER);
-      dc.drawText(x,y,font,value.toString(),Gfx.TEXT_JUSTIFY_CENTER);
+      dc.setColor(Gfx.COLOR_YELLOW, Gfx.COLOR_TRANSPARENT);
+      dc.drawText(x, y - (dc.getFontHeight(font)), font, label.toString(), Gfx.TEXT_JUSTIFY_CENTER);
+      dc.drawText(x, y, font, value.toString(), Gfx.TEXT_JUSTIFY_CENTER);
 
     }
 

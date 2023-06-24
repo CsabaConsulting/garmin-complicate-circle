@@ -6,6 +6,7 @@ coverage
 # production
 build
 prg
+bin
 
 # misc
 .DS_Store
